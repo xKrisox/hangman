@@ -75,3 +75,14 @@ bool apply_guess(Game *g, char ch, bool *was_new)
     if (hits == 0) g->wrong_guesses++;
     return true;
 }
+
+bool is_won(const Game *g)
+{
+    return strcmp(g->secret, g->progress) == 0;
+}
+
+bool is_lost(const Game *g)
+{
+    return g->wrong_guesses >= g->max_guesses;
+}
+
