@@ -24,3 +24,10 @@ bool load_words(const char *path, char words[][MAX_WORD_LEN], int *count)
     *count = i;
     return i > 0;
 }
+
+void pick_random_word(char words[][MAX_WORD_LEN], int count, char out[MAX_WORD_LEN])
+{
+    int idx = rand() % count;
+    strcpy(out, words[idx]);
+}
+
