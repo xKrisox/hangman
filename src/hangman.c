@@ -42,3 +42,10 @@ void init_game(Game *g, const char *word)
     g->progress[n] = '\0';
 }
 
+static int already_guessed_index(const Game *g, char ch)
+{
+    for (int i = 0; g->guessed[i]; ++i)
+        if (g->guessed[i] == ch)
+            return i;
+    return -1;
+}
