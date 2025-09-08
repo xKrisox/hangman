@@ -31,3 +31,14 @@ void pick_random_word(char words[][MAX_WORD_LEN], int count, char out[MAX_WORD_L
     strcpy(out, words[idx]);
 }
 
+void init_game(Game *g, const char *word)
+{
+    memset(g, 0, sizeof(*g));
+    g->max_guesses = MAX_GUESSES;
+    strncpy(g->secret, word, MAX_WORD_LEN - 1);
+    size_t len = strlen(word);
+    for (size_t i = 0; i < n; ++i)
+        g->progress[i] = (word[i] == '-' || word[i] == ' ') ? word[i] : '_';
+    g->progress[n] = '\0';
+}
+
