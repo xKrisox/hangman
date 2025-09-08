@@ -86,3 +86,32 @@ bool is_lost(const Game *g)
     return g->wrong_guesses >= g->max_guesses;
 }
 
+void draw_hangman(int w)
+{
+    const char *stages[] = {
+        " \n \n \n \n=====",
+        " +---+\n |   |\n     |\n     |\n=====",
+        " +---+\n |   |\n O   |\n     |\n=====",
+        " +---+\n |   |\n O   |\n |   |\n=====",
+        " +---+\n |   |\n O   |\n/|   |\n=====",
+        " +---+\n |   |\n O   |\n/|\\  |\n=====",
+        " +---+\n |   |\n O   |\n/|\\  |\n/    |\n=====",
+        " +---+\n |   |\n O   |\n/|\\  |\n/ \\  |\n====="
+    };
+    if (w < 0) w = 0;
+    if (w > 7) w = 7;
+    printf("%s\n", stages[w]);
+}
+
+void save_score(const char *path, const Game *g, bool won)
+{
+    FILE *f = fopen(path, "a");
+    if (!f) return;
+    time_t t = time(NULL);
+    struct tm *tm = localtime(&t);
+    char buf[64];
+    strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", tm);
+    fprintf(f, "%s;result=%s;word=%s;wrong=%d\n",
+            buf, won ? "win" : "lose", g->secret, g->wrong_guesses);
+    fclose(f);
+}
