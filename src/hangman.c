@@ -49,3 +49,29 @@ static int already_guessed_index(const Game *g, char ch)
             return i;
     return -1;
 }
+
+bool apply_guess(Game *g, char ch, bool *was_new)
+{
+    ch = (char)tolower((unsigned char)ch);
+    *was_new = false;
+
+    if (!isalpha((unsigned char)ch)) return false;
+    if (already_guessed_index(g, ch) >= 0) return true;
+
+    size_t len = strlen(g->guessed);
+    g->guessed[len] = ch;
+    g->guessed[len + 1] = '\0';
+    *was_new = true;
+
+    int hits = 0;
+    for (size_t i = 0; g->secret[i]; ++i)
+    {
+        if (g->secret[i] == ch)
+        {
+            g->progress[i] = ch;
+            ++hits;
+        }
+    }
+    if (hits == 0) g->wrong_guesses++;
+    return true;
+}
